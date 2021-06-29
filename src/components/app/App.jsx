@@ -2,40 +2,28 @@ import React, { useState } from 'react';
 
 import classes from './app.module.scss';
 
+import {
+    getData,
+    storage
+} from "../../helpers/helpers";
+import {URL_API} from "../../helpers/constants";
+
 const App = () => {
-    const storage = window.localStorage;
+
     const [ state, setState ] = useState([]);
 
-
-    const toFetch = () => {
-        fetch('https://yalantis-react-school-api.yalantis.com/api/task0/users')
-            .then(data => data.text()
-            )
-            .then(data => setState(JSON.parse(data)));
-    };
-
-
-    if (!storage.getItem('employees')) {
-        console.log('bingo');
-        toFetch();
+    if (!storage.getItem('employees') || storage.getItem('employees') === '[]') {
+        getData(URL_API, setState);
         storage.setItem('employees', JSON.stringify(state))
     }
 
-    // console.log(JSON.parse(storage.getItem('employees')));
-
-    const arrOfResults = JSON.parse(storage.getItem('employees'));
-
-    console.log('=> arrOfResults :=> ', arrOfResults);
-
-    console.log('state => ', state);
-
-    const renderEmployees = arrOfResults.map(employee => {
+    const renderEmployees = JSON.parse(storage.getItem('employees')).map(employee => {
 
         const {
             id,
-            firstName,
+            dob,
             lastName,
-            dob
+            firstName
         } = employee;
 
         return (
