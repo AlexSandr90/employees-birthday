@@ -21,12 +21,38 @@ const App = () => {
         storage.setItem('employees', JSON.stringify(state))
     }
 
-    console.log(JSON.parse(storage.getItem('employees')));
+    // console.log(JSON.parse(storage.getItem('employees')));
+
+    const arrOfResults = JSON.parse(storage.getItem('employees'));
+
+    console.log('=> arrOfResults :=> ', arrOfResults);
 
     console.log('state => ', state);
 
+    const renderEmployees = arrOfResults.map(employee => {
+
+        const {
+            id,
+            firstName,
+            lastName,
+            dob
+        } = employee;
+
+        return (
+            <li key={ id }>
+                <h2>First Name: {firstName}</h2>
+                <h2>Last Name: {lastName}</h2>
+                <p>BDay: {dob}</p>
+            </li>
+        )
+    });
+
     return (
         <div className={classes.app}>
+
+            <ol>
+                { renderEmployees }
+            </ol>
 
         </div>
     );
